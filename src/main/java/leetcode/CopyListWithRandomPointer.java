@@ -14,37 +14,79 @@ public class CopyListWithRandomPointer {
     }
   }
 
+//    public Node copyRandomList(Node head) {
+//      if (head == null) return head;
+//
+//      Node it = head;
+//
+//      while (it != null) {
+//        Node copy = new Node(it.val);
+//        copy.next = it.next;
+//        it.next = copy;
+//        it = copy.next;
+//      }
+//
+//      it = head;
+//
+//      while (it != null) {
+//        Node random = it.random == null ? null : it.random;
+//        it.next.random = random == null ? null : random.next;
+//        it = it.next.next;
+//      }
+//
+//      Node anchor = new Node(-1);
+//      anchor.next = head.next;
+//      Node ita = anchor.next;
+//      it = head.next.next.next;
+//
+//      while (it != null) {
+//        ita.next = it;
+//        ita = ita.next;
+//        it = it.next == null ? null : it.next.next;
+//      }
+//      return anchor.next;
+//    }
+
   public Node copyRandomList(Node head) {
-    if (head == null) return head;
 
-    Node it = head;
+    if (head == null) return null;
 
-    while (it != null) {
-      Node copy = new Node(it.val);
-      copy.next = it.next;
-      it.next = copy;
-      it = copy.next;
+    //  ----------
+    // |          |
+    // A -> A' -> B -> B' -> null
+    //      |          |
+    //       ----------
+    var iter = head;
+
+    while (iter != null) {
+      Node tail = iter.next;
+      Node copy = new Node(iter.val);
+      copy.next = tail;
+      iter.next = copy;
+      iter = tail;
     }
 
-    it = head;
+    iter = head;
 
-    while (it != null) {
-      Node random = it.random == null ? null : it.random;
-      it.next.random = random == null ? null : random.next;
-      it = it.next.next;
+    while (iter != null) {
+      if (iter.random != null) {
+        iter.next.random = iter.random.next;
+      }
+      iter = iter.next.next;
     }
 
-    Node anchor = new Node(-1);
-    anchor.next = head.next;
-    Node ita = anchor.next;
-    it = head.next.next.next;
+    Node oldIt = head;
+    Node newIt = head.next;
+    Node anchor = head.next;
 
-    while (it != null) {
-      ita.next = it;
-      ita = ita.next;
-      it = it.next == null ? null : it.next.next;
+    while(oldIt != null){
+      oldIt.next = oldIt.next.next;
+      oldIt = oldIt.next;
+      newIt.next = oldIt == null ? null : oldIt.next;
+      newIt = newIt.next;
     }
-    return anchor.next;
+
+    return anchor;
   }
 
   public static void main(String[] args) {

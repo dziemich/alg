@@ -33,12 +33,38 @@ public class ReverseLinkedList {
     return p;
   }
 
+//  public ListNode reverseList(ListNode head) {
+//    if (head == null || head.next == null) return head;
+//    ListNode p = reverseList(head.next);
+//    head.next.next = head;
+//    head.next = null;
+//    return p;
+//  }
+
   public ListNode reverseList(ListNode head) {
-    if (head == null || head.next == null) return head;
-    ListNode p = reverseList(head.next);
-    head.next.next = head;
-    head.next = null;
-    return p;
+
+
+        /*
+        rev: null
+        curr: 1->2->3->null
+
+        rev: 1->null
+        curr: 2->3->null
+
+        */
+
+    ListNode current = head;
+    ListNode reversed = null;
+
+    while(current != null){
+      ListNode previousRev = reversed;
+      reversed = current;
+      reversed.next = previousRev;
+      current = current.next;
+    }
+
+    return reversed;
+
   }
 
   public static void main(String[] args) {
